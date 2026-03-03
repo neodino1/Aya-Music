@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayaa Music | Manufactura de Instrumentos de Viento</title>
+    <!-- Google Fonts: Montserrat & Playfair Display para un look premium y artesanal -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- html2pdf.js para la generación de facturas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        /* --- VARIABLES DE DISEÑO --- */
+        :root {
+            --gold: #C5A059;
+            --gold-light: #E2C99F;
+            --black: #0F0F0F;
+            --near-black: #1A1A1A;
+            --white: #FFFFFF;
+            --cream: #F9F7F2;
+            --gray-light: #F0F0F0;
+            --gray-medium: #888888;
+            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            --shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        /* --- RESET & BASE --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--white);
+            color: var(--black);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 16px 32px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            text-align: center;
+        }
+
+        .btn-gold {
+            background-color: var(--gold);
+            color: var(--white);
+        }
+
+        .btn-gold:hover {
+            background-color: var(--black);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-black {
+            background-color: var(--black);
+            color: var(--white);
+        }
+
+        .btn-black:hover {
+            background-color: var(--gold);
+            transform: translateY(-2px);
+        }
+
+        /* --- HEADER --- */
+        header {
+            padding: 30px 0;
+            background: var(--white);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            transition: var(--transition);
+        }
+
+        header.scrolled {
+            padding: 15px 0;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+        }
+
+        .nav-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--black);
+        }
+
+        .logo span {
+            color: var(--gold);
+            font-weight: 300;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--black);
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--gold);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* --- BOTÓN FLOTANTE --- */
+        .floating-access {
+            position: fixed;
+            top: 25px;
+            right: 30px;
+            width: 55px;
+            height: 55px;
+            background: var(--black);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 1100;
+            transition: var(--transition);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .floating-access svg {
+            width: 22px;
+            height: 22px;
+            fill: var(--white);
+            transition: var(--transition);
+        }
+
+        .floating-access:hover {
+            background: var(--gold);
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .floating-access:hover svg {
+            fill: var(--black);
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1511192336575-5a79af67a629?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            color: var(--white);
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 72px;
+            line-height: 1.1;
+            margin-bottom: 25px;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            font-weight: 300;
+            margin-bottom: 40px;
+            letter-spacing: 1px;
+            opacity: 0.9;
+        }
+
+        /* --- SECCIÓN MANUFACTURE --- */
+        .manufacture {
+            padding: 120px 0;
+            background: var(--cream);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .manufacture-text h2 {
+            font-size: 42px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .manufacture-text h2::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: var(--gold);
+            margin-top: 15px;
+        }
+
+        .manufacture-text p {
+            color: var(--dark-gray);
+            margin-bottom: 25px;
+            font-size: 16px;
+        }
+
+        .manufacture-img {
+            position: relative;
+        }
+
+        .manufacture-img img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            box-shadow: var(--shadow);
+        }
+
+        .manufacture-img::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            width: 100%;
+            height: 100%;
+            border: 2px solid var(--gold);
+            z-index: -1;
+        }
+
+        /* --- MODAL LOGIN --- */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-box {
+            background: var(--white);
+            padding: 60px;
+            width: 100%;
+            max-width: 450px;
+            position: relative;
+            text-align: center;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 28px;
+            cursor: pointer;
+            color: var(--gray-medium);
+        }
+
+        .modal-box h2 {
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 24px;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #eee;
+            background: #fcfcfc;
+            font-family: inherit;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        /* --- SELLER PANEL --- */
+        #seller-panel {
+            display: none;
+            background: var(--gray-light);
+            min-height: 100vh;
+        }
+
+        .panel-nav {
+            background: var(--near-black);
+            color: var(--white);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .panel-menu {
+            display: flex;
+            gap: 30px;
+        }
+
+        .panel-menu-item {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: var(--transition);
+        }
+
+        .panel-menu-item:hover, .panel-menu-item.active {
+            opacity: 1;
+            color: var(--gold);
+        }
+
+        .panel-body {
+            padding: 50px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 40px;
+            box-shadow: var(--shadow);
+            margin-bottom: 40px;
+        }
+
+        /* --- FACTURA STYLES --- */
+        #invoice-wrapper {
+            background: #fff;
+            padding: 40px;
+            width: 680px;
+            min-height: 900px; /* Asegura que tenga altura para la captura */
+            margin: 0 auto;
+            color: #333;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        .inv-header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 4px solid var(--gold);
+            padding-bottom: 30px;
+            margin-bottom: 40px;
+        }
+
+        .inv-logo {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--black);
+        }
+
+        .inv-logo span { color: var(--gold); }
+
+        .inv-meta {
+            text-align: right;
+        }
+
+        .inv-meta h1 {
+            font-size: 48px;
+            color: var(--gold);
+            margin-bottom: 10px;
+            line-height: 1;
+        }
+
+        .inv-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            margin-bottom: 50px;
+        }
+
+        .inv-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--gray-medium);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .inv-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+
+        .inv-table th {
+            background: var(--near-black);
+            color: #fff;
+            padding: 15px;
+            text-align: left;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        .inv-table td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+
+        .inv-summary {
+            margin-left: auto;
+            width: 300px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .summary-row.total {
+            border-bottom: none;
+            font-weight: 700;
+            font-size: 22px;
+            color: var(--black);
+            margin-top: 10px;
+            background: var(--cream);
+            padding: 15px;
+        }
+
+        .editable {
+            border: 1px dashed transparent;
+            padding: 2px 5px;
+        }
+
+        .editable:hover {
+            border-color: var(--gold);
+            background: #fffdf0;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background: var(--near-black);
+            color: var(--white);
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-size: 28px;
+            margin-bottom: 30px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 40px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .footer-links a {
+            color: var(--white);
+            text-decoration: none;
+            opacity: 0.6;
+        }
+
+        .footer-links a:hover { opacity: 1; color: var(--gold); }
+
+        .hidden { display: none; }
+        
+        /* --- UTILS --- */
+        .mb-20 { margin-bottom: 20px; }
+        .text-right { text-align: right; }
+        .flex-between { display: flex; justify-content: space-between; align-items: center; }
+
+    </style>
+</head>
+<body>
+
+    <!-- BOTÓN ACCESO PRIVADO -->
+    <div class="floating-access" id="btn-open-login" title="Acceso Profesional">
+        <svg viewBox="0 0 24 24">
+            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+        </svg>
+    </div>
+
+    <!-- WEB PÚBLICA -->
+    <div id="public-site">
+        <header id="main-header">
+            <div class="container nav-flex">
+                <div class="logo">AYAA<span>MUSIC</span></div>
+                <nav class="nav-links">
+                    <a href="javascript:void(0)" onclick="showPublicPage('home')">Inicio</a>
+                    <a href="javascript:void(0)" onclick="showPublicPage('manufacture')">Manufactura</a>
+                    <a href="javascript:void(0)" onclick="showPublicPage('philosophy')">Filosofía</a>
+                    <a href="javascript:void(0)" onclick="showPublicPage('catalog')">Catálogo</a>
+                    <a href="javascript:void(0)" onclick="showPublicPage('contact-section')">Contacto</a>
+                </nav>
+            </div>
+        </header>
+
+        <div id="page-home">
+            <section class="hero" id="home">
+                <div class="container">
+                    <div class="hero-content">
+                        <h1>Maestría en Viento Madera y Metal</h1>
+                        <p>Desde 1984, forjando el sonido de los mejores solistas del mundo con precisión artesanal y pasión por la acústica.</p>
+                        <a href="javascript:void(0)" onclick="showPublicPage('manufacture')" class="btn btn-gold">Nuestra Manufactura</a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="manufacture" id="manufacture">
+                <div class="container">
+                    <div class="grid-2">
+                        <div class="manufacture-text">
+                            <h2>Artesanía de Precisión</h2>
+                            <p>En Ayaa Music, cada instrumento es una obra de arte única. Nuestra fábrica combina técnicas ancestrales de luthería con las últimas innovaciones en ingeniería acústica.</p>
+                            <p>Especializados exclusivamente en instrumentos de viento madera y metal, entendemos la complejidad de la complejidad de la columna de aire y la resonancia de los materiales nobles.</p>
+                            <div style="margin-top: 40px;">
+                                <h4 class="serif" style="margin-bottom: 10px;">Línea Viento Madera</h4>
+                                <p style="font-size: 14px; opacity: 0.8;">Flautas, Clarinetes, Oboes y Fagotes construidos con maderas curadas durante décadas.</p>
+                                
+                                <h4 class="serif" style="margin-bottom: 10px; margin-top: 20px;">Línea Viento Metal</h4>
+                                <p style="font-size: 14px; opacity: 0.8;">Trompetas, Trombones y Cornos martillados a mano para una proyección inigualable.</p>
+                            </div>
+                        </div>
+                        <div class="manufacture-img">
+                            <img src="https://images.unsplash.com/photo-1573871666457-7c7329118cf9?auto=format&fit=crop&w=800&q=80" alt="Luthier trabajando">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section style="padding: 100px 0; background: var(--near-black); color: white; text-align: center;" id="philosophy">
+                <div class="container">
+                    <h2 style="font-size: 48px; margin-bottom: 30px;">El Sonido del Legado</h2>
+                    <p style="max-width: 700px; margin: 0 auto; opacity: 0.7; font-size: 18px; font-weight: 300;">"No fabricamos herramientas, creamos extensiones del alma del músico. Cada vibración es nuestra firma."</p>
+                    <div style="margin-top: 50px; display: flex; justify-content: center; gap: 60px;">
+                        <div>
+                            <div style="font-size: 42px; color: var(--gold); font-weight: 700;">100%</div>
+                            <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 2px;">Hecho a Mano</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 42px; color: var(--gold); font-weight: 700;">40+</div>
+                            <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 2px;">Años de Historia</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 42px; color: var(--gold); font-weight: 700;">24k</div>
+                            <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 2px;">Acabados Oro</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN CONTACTO COMPLETA -->
+            <section style="padding: 100px 0; background: var(--white);" id="contact-section">
+                <div class="container">
+                    <div class="grid-2">
+                        <div>
+                            <h2 class="serif" style="font-size: 42px; margin-bottom: 30px;">Hablemos de Música</h2>
+                            <p style="margin-bottom: 30px; opacity: 0.8;">¿Buscas un instrumento a medida o necesitas asesoramiento técnico? Nuestro equipo de maestros luthieres está a tu disposición para crear el sonido que imaginas.</p>
+                            <div style="margin-bottom: 20px;">
+                                <h4 class="serif" style="color: var(--gold); font-size: 18px; margin-bottom: 5px;">Visítanos</h4>
+                                <p style="font-size: 14px; opacity: 0.7;">Polígono Industrial El Sonido, Nave 42<br>28001 Madrid, España</p>
+                            </div>
+                            <div style="margin-bottom: 20px;">
+                                <h4 class="serif" style="color: var(--gold); font-size: 18px; margin-bottom: 5px;">Llámanos</h4>
+                                <p style="font-size: 14px; opacity: 0.7;">T: +34 912 345 678<br>M: +34 600 000 000</p>
+                            </div>
+                            <div>
+                                <h4 class="serif" style="color: var(--gold); font-size: 18px; margin-bottom: 5px;">Escríbenos</h4>
+                                <p style="font-size: 14px; opacity: 0.7;">info@ayaamusic.com<br>ventas@ayaamusic.com</p>
+                            </div>
+                        </div>
+                        <div class="card" style="padding: 40px; background: var(--cream); border-top: 4px solid var(--gold);">
+                            <h3 class="serif" style="margin-bottom: 25px; font-size: 24px;">Envíanos un mensaje</h3>
+                            <form onsubmit="event.preventDefault(); alert('Mensaje enviado con éxito. Nos pondremos en contacto pronto.'); this.reset();">
+                                <div class="input-group">
+                                    <label>Nombre Completo</label>
+                                    <input type="text" placeholder="Tu nombre" required>
+                                </div>
+                                <div class="input-group">
+                                    <label>Email</label>
+                                    <input type="email" placeholder="tu@email.com" required>
+                                </div>
+                                <div class="input-group">
+                                    <label>Mensaje</label>
+                                    <textarea style="width: 100%; height: 100px; padding: 15px; border: 1px solid #eee; font-family: inherit; resize: none;" placeholder="¿En qué podemos ayudarte?" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-black" style="width: 100%;">Enviar Mensaje</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- SUBPÁGINA CATÁLOGO PÚBLICO -->
+        <div id="page-catalog" class="hidden" style="padding-top: 120px; background: var(--cream); min-height: 80vh; padding-bottom: 80px;">
+            <div class="container">
+                <h2 class="serif" style="font-size: 42px; text-align: center; margin-bottom: 60px;">Catálogo de Manufactura</h2>
+                
+                <!-- VIENTO MADERA -->
+                <div style="margin-bottom: 80px;">
+                    <h3 class="serif" style="font-size: 32px; border-bottom: 2px solid var(--gold); display: inline-block; margin-bottom: 40px;">🌳 LÍNEA VIENTO MADERA</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px;">
+                        <div class="card" style="margin-bottom: 0; border-top: 4px solid var(--gold);">
+                            <h4 class="serif" style="color: var(--gold); font-size: 22px;">🎶 Flauta Traversa Ayaá “Brisa”</h4>
+                            <div style="font-size: 14px; margin-top: 15px;">
+                                <p><strong>Nivel:</strong> Profesional / Avanzado</p>
+                                <p><strong>Material:</strong> Madera seleccionada o cuerpo metálico opcional</p>
+                                <p><strong>Sistema:</strong> Llaves ergonómicas calibradas a mano</p>
+                                <p><strong>Afinación:</strong> A=440/442 Hz personalizable</p>
+                                <div style="margin-top: 10px;">
+                                    <strong>Características:</strong>
+                                    <ul style="padding-left: 20px; margin-top: 5px;">
+                                        <li>Resonancia cálida y equilibrada</li>
+                                        <li>Respuesta inmediata en registros agudos</li>
+                                        <li>Ajuste acústico individual</li>
+                                        <li>Grabado artesanal opcional</li>
+                                    </ul>
+                                </div>
+                                <div style="margin-top: 10px;">
+                                    <strong>Acabados:</strong> Natural sellado premium, Plata, Baño de oro (bajo pedido).
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card" style="margin-bottom: 0; border-top: 4px solid var(--gold);">
+                            <h4 class="serif" style="color: var(--gold); font-size: 22px;">🎶 Clarinete Ayaá “Raíz”</h4>
+                            <div style="font-size: 14px; margin-top: 15px;">
+                                <p><strong>Nivel:</strong> Profesional</p>
+                                <p><strong>Madera:</strong> Granadillo seleccionado</p>
+                                <p><strong>Sistema:</strong> Boehm</p>
+                                <p><strong>Llaves:</strong> Plata maciza opcional</p>
+                                <div style="margin-top: 10px;">
+                                    <strong>Características:</strong>
+                                    <ul style="padding-left: 20px; margin-top: 5px;">
+                                        <li>Sonido profundo y centrado</li>
+                                        <li>Excelente proyección orquestal</li>
+                                        <li>Zapatillas premium</li>
+                                        <li>Ajuste manual pieza por pieza</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card" style="margin-bottom: 0; border-top: 4px solid var(--gold);">
+                            <h4 class="serif" style="color: var(--gold); font-size: 22px;">🎶 Oboe Ayaá “Alma”</h4>
+                            <div style="font-size: 14px; margin-top: 15px;">
+                                <p><strong>Nivel:</strong> Conservatorio / Profesional</p>
+                                <p><strong>Madera:</strong> Selección premium curada</p>
+                                <p><strong>Sistema:</strong> Completo</p>
+                                <p><strong>Llaves:</strong> Plateadas</p>
+                                <p style="margin-top: 10px;"><strong>Enfoque sonoro:</strong> Brillante, expresivo y de gran estabilidad tonal.</p>
+                            </div>
+                        </div>
+                        <div class="card" style="margin-bottom: 0; border-top: 4px solid var(--gold);">
+                            <h4 class="serif" style="color: var(--gold); font-size: 22px;">🎶 Fagot Ayaá “Origen”</h4>
+                            <div style="font-size: 14px; margin-top: 15px;">
+                                <p><strong>Nivel:</strong> Profesional</p>
+                                <p><strong>Construcción:</strong> Artesanal por secciones</p>
+                                <p><strong>Llaves:</strong> Plata / baño oro opcional</p>
+                                <div style="margin-top: 10px;">
+                                    <strong>Destaca por:</strong>
+                                    <ul style="padding-left: 20px; margin-top: 5px;">
+                                        <li>Registro grave potente</li>
+                                        <li>Estabilidad en afinación</li>
+                                        <li>Equilibrio en todos los registros</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIENTO METAL -->
+                <div style="margin-bottom: 80px;">
+                    <h3 class="serif" style="font-size: 32px; border-bottom: 2px solid var(--gold); display: inline-block; margin-bottom: 40px;">🎺 LÍNEA VIENTO METAL</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px;">
+                        <div class="card" style="margin-bottom: 0; border-top: 4px solid var(--gold);">
+                            <h4 class="serif" style="color: var(--gold); font-size: 22px;">🎺 Trompeta Ayaá “Fuego”</h4>
+                            <div style="font-size: 14px; margin-top: 15px;">
+                                <p><strong>Afinación:</strong> Sib</p>
+                                <p><strong>Material:</strong> Latón de alta pureza</p>
+                                <p><strong>Campana:</strong> Martillada a mano</p>
+                                <div style="margin-top: 10px;">
+                                    <strong>Opciones:</strong> Lacado transparente, Plateado, Baño de oro parcial o completo.
+                                </div>
+                                <p style="margin-top: 10px;"><strong>Perfil sonoro:</strong> Brillante, potente y con gran proyección.</p>
+                            </div>
+                        </div>
+                        <div class="card" style="margin-bottom: 0; border-top: 4px solid var(--gold);">
+                            <h4 class="serif" style="color: var(--gold); font-size: 22px;">🎺 Corneta Ayaá “Legado”</h4>
+                            <div style="font-size: 14px; margin-top: 15px;">
+                                <p><strong>Afinación:</strong> Sib</p>
+                                <p><strong>Construcción:</strong> Cuerpo artesanal con ajuste manual de válvulas</p>
+                                <p style="margin-top: 10px;"><strong>Ideal para:</strong> Bandas sinfónicas, tradicionales y solistas.</p>
+                                <div style="margin-top: 10px;">
+                                    <strong>Opciones premium:</strong> Grabado personalizado, Baño de plata, Baño de oro.
+                                </div>
+                                <p style="margin-top: 10px;"><strong>Sonido:</strong> Cálido, redondo y expresivo.</p>
+                            </div>
+                        </div>
+                        <div class="card" style="margin-bottom: 0; border-top: 4px solid var(--gold);">
+                            <h4 class="serif" style="color: var(--gold); font-size: 22px;">🎺 Trombón Ayaá “Horizonte”</h4>
+                            <div style="font-size: 14px; margin-top: 15px;">
+                                <p><strong>Tipo:</strong> Tenor</p>
+                                <p><strong>Sistema:</strong> Vara calibrada manualmente</p>
+                                <p><strong>Campana:</strong> Latón martillado</p>
+                                <p style="margin-top: 10px;">Respuesta suave y gran profundidad sonora.</p>
+                            </div>
+                        </div>
+                        <div class="card" style="margin-bottom: 0; border-top: 4px solid var(--gold);">
+                            <h4 class="serif" style="color: var(--gold); font-size: 22px;">🎺 Corno Ayaá “Nobleza”</h4>
+                            <div style="font-size: 14px; margin-top: 15px;">
+                                <p><strong>Afinación:</strong> Fa / Doble Fa-Sib</p>
+                                <p><strong>Construcción:</strong> Curvado y soldadura artesanal</p>
+                                <div style="margin-top: 10px;">
+                                    <strong>Características:</strong>
+                                    <ul style="padding-left: 20px; margin-top: 5px;">
+                                        <li>Sonido amplio y noble</li>
+                                        <li>Excelente estabilidad</li>
+                                        <li>Ajuste ergonómico personalizado</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PERSONALIZACIÓN Y SERVICIOS -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 80px;">
+                    <div class="card" style="background: var(--near-black); color: white;">
+                        <h3 class="serif" style="color: var(--gold); font-size: 28px; margin-bottom: 20px;">💎 LÍNEA PERSONALIZACIÓN</h3>
+                        <ul style="list-style: none; font-size: 14px; line-height: 2;">
+                            <li>✔ Grabados artesanales</li>
+                            <li>✔ Baños de oro 18k</li>
+                            <li>✔ Baños de plata fina</li>
+                            <li>✔ Ajuste acústico individual</li>
+                            <li>✔ Personalización ergonómica</li>
+                            <li>✔ Series limitadas firmadas</li>
+                        </ul>
+                    </div>
+                    <div class="card" style="background: var(--near-black); color: white;">
+                        <h3 class="serif" style="color: var(--gold); font-size: 28px; margin-bottom: 20px;">🔧 SERVICIOS PROFESIONALES</h3>
+                        <ul style="list-style: none; font-size: 14px; line-height: 2;">
+                            <li>✔ Restauración</li>
+                            <li>✔ Mantenimiento integral</li>
+                            <li>✔ Cambio de zapatillas</li>
+                            <li>✔ Ajustes mecánicos</li>
+                            <li>✔ Limpieza profunda profesional</li>
+                            <li>✔ Replateado y renovación estética</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- GARANTÍA Y TIENDA -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+                    <div class="card" style="border: 2px solid var(--gold);">
+                        <h3 class="serif" style="font-size: 28px; margin-bottom: 20px;">🌟 GARANTÍA AYAÁ</h3>
+                        <p style="font-size: 14px; margin-bottom: 15px;">Todos los instrumentos incluyen:</p>
+                        <ul style="list-style: none; font-size: 14px; line-height: 2;">
+                            <li>✔ Certificado de autenticidad</li>
+                            <li>✔ Prueba acústica profesional</li>
+                            <li>✔ Garantía estructural</li>
+                            <li>✔ Primera calibración gratuita</li>
+                        </ul>
+                    </div>
+                    <div class="card" style="border: 2px solid var(--gold);">
+                        <h3 class="serif" style="font-size: 28px; margin-bottom: 20px;">📍 Experiencia en Tienda</h3>
+                        <ul style="list-style: none; font-size: 14px; line-height: 2;">
+                            <li>✔ Sala de prueba acústica insonorizada</li>
+                            <li>✔ Asesoría personalizada</li>
+                            <li>✔ Evaluación técnica para músicos</li>
+                            <li>✔ Opciones de pedido especial</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer id="contact">
+            <div class="container">
+                <div class="grid-2" style="text-align: left; margin-bottom: 60px; gap: 40px;">
+                    <div>
+                        <div class="footer-logo logo" style="margin-bottom: 20px;">AYAA<span>MUSIC</span></div>
+                        <p style="opacity: 0.6; font-size: 14px; max-width: 400px;">Manufactura artesanal de instrumentos de viento desde 1984. Excelencia acústica para los músicos más exigentes del mundo.</p>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div>
+                            <h4 class="serif" style="color: var(--gold); margin-bottom: 15px; font-size: 18px;">Sede Central</h4>
+                            <p style="font-size: 13px; opacity: 0.7;">Polígono Industrial El Sonido, Nave 42<br>28001 Madrid, España</p>
+                        </div>
+                        <div>
+                            <h4 class="serif" style="color: var(--gold); margin-bottom: 15px; font-size: 18px;">Contacto</h4>
+                            <p style="font-size: 13px; opacity: 0.7;">T: +34 912 345 678<br>E: info@ayaamusic.com</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-links" style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 40px;">
+                    <a href="#">Privacidad</a>
+                    <a href="#">Términos de Servicio</a>
+                    <a href="#">Distribuidores</a>
+                    <a href="#">Soporte Técnico</a>
+                </div>
+                <p style="font-size: 11px; opacity: 0.4; letter-spacing: 1px; margin-top: 20px;">&copy; 2024 AYAA MUSIC MANUFACTURE. TODOS LOS DERECHOS RESERVADOS.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- MODAL LOGIN -->
+    <div class="modal" id="login-modal">
+        <div class="modal-box">
+            <span class="close-modal" id="btn-close-modal">&times;</span>
+            <h2>Acceso Profesional</h2>
+            <p style="font-size: 13px; color: #888; margin-bottom: 30px;">Portal exclusivo para agentes y vendedores autorizados.</p>
+            <form id="login-form">
+                <div class="input-group">
+                    <label>ID de Agente</label>
+                    <input type="text" id="login-user" placeholder="Ag-00" required>
+                </div>
+                <div class="input-group">
+                    <label>Clave de Acceso</label>
+                    <input type="password" id="login-pass" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn btn-gold" style="width: 100%; margin-top: 10px;">Entrar al Sistema</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- PANEL DE VENDEDOR -->
+    <div id="seller-panel">
+        <div class="panel-nav">
+            <div class="logo" style="color: white; font-size: 20px;">AYAA<span>PRO</span></div>
+            <div class="panel-menu">
+                <div class="panel-menu-item active" onclick="switchPanel('order')">Nuevo Pedido</div>
+                <div class="panel-menu-item" onclick="switchPanel('catalog')">Catálogo Interno</div>
+                <div class="panel-menu-item" onclick="switchPanel('services')">Servicios</div>
+                <div class="panel-menu-item" onclick="logout()" style="color: #ff4444;">Cerrar Sesión</div>
+            </div>
+        </div>
+
+        <div class="panel-body">
+            <!-- SECCIÓN PEDIDO -->
+            <div id="panel-order">
+                <div class="card">
+                    <h3 class="serif mb-20" style="font-size: 28px;">Configuración de Pedido</h3>
+                    <div class="grid-2" style="gap: 40px;">
+                        <div>
+                            <div class="input-group">
+                                <label>Cliente / Institución</label>
+                                <input type="text" id="form-client-name" placeholder="Nombre completo">
+                            </div>
+                            <div class="input-group">
+                                <label>Email de Contacto</label>
+                                <input type="email" id="form-client-email" placeholder="cliente@ejemplo.com">
+                            </div>
+                        </div>
+                        <div>
+                            <div class="input-group">
+                                <label>Notas de Personalización</label>
+                                <textarea id="form-notes" style="width: 100%; height: 115px; padding: 15px; border: 1px solid #eee; font-family: inherit; resize: none;"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4 class="serif" style="margin: 30px 0 20px;">Líneas de Instrumentos y Servicios</h4>
+                    <table class="order-items-table" style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="text-align: left; border-bottom: 2px solid var(--gold);">
+                                <th style="padding: 15px; font-size: 11px; text-transform: uppercase;">Concepto</th>
+                                <th style="padding: 15px; font-size: 11px; text-transform: uppercase; width: 100px;">Cant.</th>
+                                <th style="padding: 15px; font-size: 11px; text-transform: uppercase; width: 150px;">Precio Ud. (€)</th>
+                                <th style="padding: 15px; font-size: 11px; text-transform: uppercase; width: 50px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="order-rows">
+                            <!-- Filas dinámicas -->
+                        </tbody>
+                    </table>
+                    <button class="btn" style="background: #f5f5f5; color: #666; margin-top: 20px; font-size: 11px;" onclick="addRow()">+ Añadir Concepto</button>
+
+                    <div class="text-right" style="margin-top: 50px;">
+                        <button class="btn btn-gold" onclick="processOrder()">Generar Factura Proforma</button>
+                    </div>
+                </div>
+
+                <!-- CONTENEDOR FACTURA (VISIBLE TRAS PROCESAR) -->
+                <div id="invoice-container" class="hidden">
+                    <div class="flex-between mb-20">
+                        <h3 class="serif" style="font-size: 28px;">Documento Generado</h3>
+                        <button class="btn btn-black" onclick="exportPDF(event)">Descargar PDF Oficial</button>
+                    </div>
+                    
+                    <!-- EL DOCUMENTO REAL -->
+                    <div style="background: #f5f5f5; padding: 40px 0; border: 1px solid #eee;">
+                        <div id="invoice-wrapper">
+                            <div class="inv-header">
+                            <div>
+                                <div class="inv-logo">AYAA<span>MUSIC</span></div>
+                                <p style="font-size: 12px; color: #666; margin-top: 10px;">
+                                    <strong>Ayaa Music Manufacture S.L.</strong><br>
+                                    Polígono Industrial El Sonido, Nave 42<br>
+                                    28001 Madrid, España<br>
+                                    CIF: B12345678 | ayaamusic.com
+                                </p>
+                            </div>
+                            <div class="inv-meta">
+                                <h1>FACTURA</h1>
+                                <p>Nº: <span class="editable" contenteditable="true" id="inv-num">AM-2024-001</span></p>
+                                <p>Fecha: <span class="editable" contenteditable="true" id="inv-date">01/01/2024</span></p>
+                            </div>
+                        </div>
+
+                        <div class="inv-info-grid">
+                            <div>
+                                <span class="inv-label">Facturar a:</span>
+                                <p style="font-weight: 700; font-size: 18px;" id="inv-client-name">Nombre del Cliente</p>
+                                <p id="inv-client-email">email@cliente.com</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="inv-label">Observaciones:</span>
+                                <p style="font-size: 12px; font-style: italic; color: #666;" id="inv-notes">Sin observaciones.</p>
+                            </div>
+                        </div>
+
+                        <table class="inv-table">
+                            <thead>
+                                <tr>
+                                    <th>Descripción</th>
+                                    <th style="text-align: center;">Cant.</th>
+                                    <th style="text-align: right;">Precio Ud.</th>
+                                    <th style="text-align: right;">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inv-items">
+                                <!-- Items -->
+                            </tbody>
+                        </table>
+
+                        <div class="inv-summary">
+                            <div class="summary-row">
+                                <span>Base Imponible</span>
+                                <span id="inv-subtotal">0.00 €</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>IVA (21%)</span>
+                                <span id="inv-tax">0.00 €</span>
+                            </div>
+                            <div class="summary-row total">
+                                <span>TOTAL</span>
+                                <span id="inv-total">0.00 €</span>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 100px; border-top: 1px solid #eee; padding-top: 30px; font-size: 10px; color: #999; text-align: center;">
+                            <p>Este documento es una proforma oficial de Ayaa Music Manufacture. Los instrumentos artesanales tienen un plazo de entrega estimado de 3 a 6 meses según personalización.</p>
+                            <p style="margin-top: 10px;">Garantía de por vida en estructura acústica. Certificado de autenticidad incluido.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            <!-- SECCIÓN CATÁLOGO -->
+            <div id="panel-catalog" class="hidden">
+                <div class="card">
+                    <h3 class="serif mb-20">Catálogo Interno de Manufactura</h3>
+                    <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                        <thead>
+                            <tr style="text-align: left; border-bottom: 2px solid var(--gold);">
+                                <th style="padding: 15px;">Instrumento</th>
+                                <th style="padding: 15px;">Línea</th>
+                                <th style="padding: 15px;">Precio Base</th>
+                                <th style="padding: 15px;">Disponibilidad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid #eee;">
+                                <td style="padding: 15px;">Flauta travesera “Brisa”</td>
+                                <td style="padding: 15px;">Viento Madera</td>
+                                <td style="padding: 15px;">2.500,00 € / 4.500,00 €</td>
+                                <td style="padding: 15px; color: green;">En Stock</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #eee;">
+                                <td style="padding: 15px;">Clarinete “Raíz”</td>
+                                <td style="padding: 15px;">Viento Madera</td>
+                                <td style="padding: 15px;">3.000,00 € / 5.500,00 €</td>
+                                <td style="padding: 15px; color: orange;">Bajo Pedido</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #eee;">
+                                <td style="padding: 15px;">Oboe “Alma”</td>
+                                <td style="padding: 15px;">Viento Madera</td>
+                                <td style="padding: 15px;">6.000,00 € / 9.500,00 €</td>
+                                <td style="padding: 15px; color: green;">En Stock</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #eee;">
+                                <td style="padding: 15px;">Fagot “Origen”</td>
+                                <td style="padding: 15px;">Viento Madera</td>
+                                <td style="padding: 15px;">7.500,00 € / 12.000,00 €</td>
+                                <td style="padding: 15px; color: orange;">Bajo Pedido</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #eee;">
+                                <td style="padding: 15px;">Trompeta “Fuego”</td>
+                                <td style="padding: 15px;">Viento Metal</td>
+                                <td style="padding: 15px;">2.800,00 € / 5.000,00 €</td>
+                                <td style="padding: 15px; color: green;">En Stock</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #eee;">
+                                <td style="padding: 15px;">Corneta “Legado”</td>
+                                <td style="padding: 15px;">Viento Metal</td>
+                                <td style="padding: 15px;">2.200,00 € / 4.000,00 €</td>
+                                <td style="padding: 15px; color: green;">En Stock</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #eee;">
+                                <td style="padding: 15px;">Trombón “Horizonte”</td>
+                                <td style="padding: 15px;">Viento Metal</td>
+                                <td style="padding: 15px;">3.500,00 € / 6.500,00 €</td>
+                                <td style="padding: 15px; color: green;">En Stock</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #eee;">
+                                <td style="padding: 15px;">Corno “Nobleza”</td>
+                                <td style="padding: 15px;">Viento Metal</td>
+                                <td style="padding: 15px;">6.000,00 € / 10.500,00 €</td>
+                                <td style="padding: 15px; color: orange;">Bajo Pedido</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #eee;">
+                                <td style="padding: 15px;">Grabado personalizado</td>
+                                <td style="padding: 15px;">Servicio</td>
+                                <td style="padding: 15px;">200,00 € / 500,00 €</td>
+                                <td style="padding: 15px; color: green;">Disponible</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #eee;">
+                                <td style="padding: 15px;">Baño de plata</td>
+                                <td style="padding: 15px;">Servicio</td>
+                                <td style="padding: 15px;">400,00 € / 700,00 €</td>
+                                <td style="padding: 15px; color: green;">Disponible</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #eee;">
+                                <td style="padding: 15px;">Baño de oro</td>
+                                <td style="padding: 15px;">Servicio</td>
+                                <td style="padding: 15px;">1.000,00 € / 1.500,00 €</td>
+                                <td style="padding: 15px; color: orange;">Bajo Pedido</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #eee;">
+                                <td style="padding: 15px;">Ajuste ergonómico</td>
+                                <td style="padding: 15px;">Servicio</td>
+                                <td style="padding: 15px;">300,00 € / 500,00 €</td>
+                                <td style="padding: 15px; color: green;">Disponible</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #eee;">
+                                <td style="padding: 15px;">Restauración / mantenimiento</td>
+                                <td style="padding: 15px;">Servicio</td>
+                                <td style="padding: 15px;">150,00 € / 800,00 €</td>
+                                <td style="padding: 15px; color: green;">Disponible</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SECCIÓN SERVICIOS -->
+            <div id="panel-services" class="hidden">
+                <div class="card">
+                    <h3 class="serif mb-20">Servicios de Taller y Personalización</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;">
+                        <div style="padding: 20px; border: 1px solid #eee;">
+                            <h4 class="serif" style="color: var(--gold);">Restauración</h4>
+                            <p style="font-size: 13px; margin-top: 10px;">Tratamiento completo de maderas y metales antiguos. Técnicas de luthería tradicional.</p>
+                            <div style="margin-top: 15px; font-weight: 700;">Desde 500 €</div>
+                        </div>
+                        <div style="padding: 20px; border: 1px solid #eee;">
+                            <h4 class="serif" style="color: var(--gold);">Personalización Oro 24k</h4>
+                            <p style="font-size: 13px; margin-top: 10px;">Baño de oro en llaves, campanas o cuerpo completo para una estética y resonancia superior.</p>
+                            <div style="margin-top: 15px; font-weight: 700;">Desde 800 €</div>
+                        </div>
+                        <div style="padding: 20px; border: 1px solid #eee;">
+                            <h4 class="serif" style="color: var(--gold);">Mantenimiento</h4>
+                            <p style="font-size: 13px; margin-top: 10px;">Limpieza ultrasónica, ajuste de zapatillas y calibración de muelles.</p>
+                            <div style="margin-top: 15px; font-weight: 700;">180 € / sesión</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* --- INTERACCIONES BÁSICAS --- */
+
+        // Public Page Routing
+        function showPublicPage(pageId) {
+            const homePage = document.getElementById('page-home');
+            const catalogPage = document.getElementById('page-catalog');
+            
+            if (pageId === 'catalog') {
+                homePage.classList.add('hidden');
+                catalogPage.classList.remove('hidden');
+                window.scrollTo(0, 0);
+            } else {
+                catalogPage.classList.add('hidden');
+                homePage.classList.remove('hidden');
+                
+                // If it's a section within home, scroll to it
+                if (pageId !== 'home') {
+                    const section = document.getElementById(pageId);
+                    if (section) {
+                        const headerOffset = 80;
+                        const elementPosition = section.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: "smooth"
+                        });
+                    }
+                } else {
+                    window.scrollTo(0, 0);
+                }
+            }
+        }
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('main-header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Modal Logic
+        const btnOpenLogin = document.getElementById('btn-open-login');
+        const btnCloseModal = document.getElementById('btn-close-modal');
+        const modal = document.getElementById('login-modal');
+
+        btnOpenLogin.onclick = () => modal.style.display = 'flex';
+        btnCloseModal.onclick = () => modal.style.display = 'none';
+        window.onclick = (e) => { if (e.target == modal) modal.style.display = 'none'; }
+
+        // Login Logic
+        const loginForm = document.getElementById('login-form');
+        loginForm.onsubmit = (e) => {
+            e.preventDefault();
+            
+            const user = document.getElementById('login-user').value;
+            const pass = document.getElementById('login-pass').value;
+
+            // Verificación de credenciales fijas
+            if (user === 'Ag-00' && pass === '1234') {
+                document.getElementById('public-site').style.display = 'none';
+                document.getElementById('btn-open-login').style.display = 'none';
+                document.getElementById('seller-panel').style.display = 'block';
+                modal.style.display = 'none';
+                
+                // Init date
+                document.getElementById('inv-date').innerText = new Date().toLocaleDateString();
+                if (document.getElementById('order-rows').children.length === 0) {
+                    addRow(); // First row if empty
+                }
+            } else {
+                alert('Credenciales incorrectas. Por favor, verifique su ID de Agente y Clave.');
+                document.getElementById('login-pass').value = '';
+            }
+        };
+
+        function logout() {
+            if (confirm('¿Desea cerrar la sesión profesional?')) {
+                location.reload();
+            }
+        }
+
+        // Panel Switching
+        function switchPanel(panelId) {
+            const panels = ['order', 'catalog', 'services'];
+            panels.forEach(p => {
+                document.getElementById('panel-' + p).classList.add('hidden');
+            });
+            document.getElementById('panel-' + panelId).classList.remove('hidden');
+            
+            // Active state for menu
+            const menuItems = document.querySelectorAll('.panel-menu-item');
+            menuItems.forEach(item => item.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        /* --- LÓGICA DE FACTURACIÓN --- */
+
+        function addRow() {
+            const tbody = document.getElementById('order-rows');
+            const tr = document.createElement('tr');
+            tr.style.borderBottom = '1px solid #eee';
+            tr.innerHTML = `
+                <td style="padding: 15px;"><input type="text" class="row-desc" placeholder="Ej: Flauta Ayaá Brisa" style="width:100%; border:none; padding: 5px; background: #f9f9f9;"></td>
+                <td style="padding: 15px;"><input type="number" class="row-qty" value="1" min="1" style="width:100%; border:none; padding: 5px; background: #f9f9f9;"></td>
+                <td style="padding: 15px;"><input type="number" class="row-price" value="0" style="width:100%; border:none; padding: 5px; background: #f9f9f9;"></td>
+                <td style="padding: 15px;"><button onclick="this.parentElement.parentElement.remove()" style="color:red; background:none; border:none; cursor:pointer; font-size: 20px;">&times;</button></td>
+            `;
+            tbody.appendChild(tr);
+        }
+
+        function processOrder() {
+            const client = document.getElementById('form-client-name').value || 'Cliente No Especificado';
+            const email = document.getElementById('form-client-email').value || 'info@cliente.com';
+            const notes = document.getElementById('form-notes').value || 'Sin observaciones adicionales.';
+
+            // Fill Invoice
+            document.getElementById('inv-client-name').innerText = client;
+            document.getElementById('inv-client-email').innerText = email;
+            document.getElementById('inv-notes').innerText = notes;
+
+            const invBody = document.getElementById('inv-items');
+            invBody.innerHTML = '';
+            
+            let subtotal = 0;
+            const rows = document.querySelectorAll('#order-rows tr');
+            
+            rows.forEach(row => {
+                const desc = row.querySelector('.row-desc').value;
+                const qty = parseFloat(row.querySelector('.row-qty').value);
+                const price = parseFloat(row.querySelector('.row-price').value);
+                
+                if (desc) {
+                    const total = qty * price;
+                    subtotal += total;
+                    
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${desc}</td>
+                        <td style="text-align: center;">${qty}</td>
+                        <td style="text-align: right;">${price.toLocaleString('es-ES', {minimumFractionDigits: 2})} €</td>
+                        <td style="text-align: right;">${total.toLocaleString('es-ES', {minimumFractionDigits: 2})} €</td>
+                    `;
+                    invBody.appendChild(tr);
+                }
+            });
+
+            const tax = subtotal * 0.21;
+            const total = subtotal + tax;
+
+            document.getElementById('inv-subtotal').innerText = subtotal.toLocaleString('es-ES', {minimumFractionDigits: 2}) + ' €';
+            document.getElementById('inv-tax').innerText = tax.toLocaleString('es-ES', {minimumFractionDigits: 2}) + ' €';
+            document.getElementById('inv-total').innerText = total.toLocaleString('es-ES', {minimumFractionDigits: 2}) + ' €';
+
+            document.getElementById('invoice-container').classList.remove('hidden');
+            document.getElementById('invoice-container').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function exportPDF(event) {
+            const element = document.getElementById('invoice-wrapper');
+            const btn = event.currentTarget || event.target; 
+            const originalBtnText = btn.innerText;
+            
+            btn.innerText = 'Generando PDF...';
+            btn.disabled = true;
+
+            const opt = {
+                margin:       10,
+                filename:     'Factura_AyaaMusic_' + document.getElementById('inv-num').innerText + '.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { 
+                    scale: 2, 
+                    useCORS: true,
+                    letterRendering: true,
+                    scrollY: 0, // Evita PDF en blanco si hay scroll
+                    scrollX: 0
+                },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
+            };
+
+            // Pequeño delay para asegurar que el DOM se ha actualizado con los datos
+            setTimeout(() => {
+                html2pdf().set(opt).from(element).save().then(() => {
+                    btn.innerText = originalBtnText;
+                    btn.disabled = false;
+                }).catch(err => {
+                    console.error('Error:', err);
+                    alert('Error al generar PDF. Inténtelo de nuevo.');
+                    btn.innerText = originalBtnText;
+                    btn.disabled = false;
+                });
+            }, 500);
+        }
+    </script>
+</body>
+</html>
